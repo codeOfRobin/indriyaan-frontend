@@ -77,7 +77,7 @@
     clearphoto();
   }
 
-  setInterval(takepicture, 1000 );
+  setInterval(takepicture, 1000);
 
   // Fill the photo with an indication that none has been
   // captured.
@@ -87,7 +87,7 @@
     context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    var data = canvas.toDataURL('image/png');
+    var data = canvas.toDataURL('image/jpeg');
     // photo.setAttribute('src', data);
   }
 
@@ -103,21 +103,27 @@
       canvas.width = width;
       canvas.height = height;
       context.drawImage(video, 0, 0, width, height);
-      console.log(video);
-      var dataURL = canvas.toDataURL();
+
+      var dataURL = canvas.toDataURL('image/jpeg');
+      var oNewP = document.createElement("p");
+      var oText = document.createTextNode(dataURL);
+      oNewP.appendChild(oText);
+      document.body.appendChild(oNewP);
+      console.log(dataURL)
           $.ajax({
       type: "POST",
-      url: "script.php",
+      url: "http://ec2-54-193-5-45.us-west-1.compute.amazonaws.com:8000/face_detection/detect",
       data: {
-         imgBase64: dataURL
+         image:dataURL
       }
     }).done(function(o) {
       console.log('saved');
+});
   // If you want the file to be visible in the browser
   // - please modify the callback in javascript. All you
   // need is to return the url to the file, you just saved
   // and than put the image in your browser.
-});
+// });
     //   photo.setAttribute('src', data);
     } else {
       clearphoto();
