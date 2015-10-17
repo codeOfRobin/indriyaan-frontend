@@ -105,20 +105,16 @@
       context.drawImage(video, 0, 0, width, height);
 
       var dataURL = canvas.toDataURL('image/jpeg');
-      var oNewP = document.createElement("p");
-      var oText = document.createTextNode(dataURL);
-      oNewP.appendChild(oText);
-      document.body.appendChild(oNewP);
-      console.log(dataURL)
+
           $.ajax({
       type: "POST",
-      url: "http://ec2-54-193-5-45.us-west-1.compute.amazonaws.com:8000/face_detection/detect",
+      url: "http://localhost:5000/",
       data: {
          image:dataURL
+      },success:function(data) {
+        alert(data["identities"])
       }
-    }).done(function(o) {
-      console.log('saved');
-});
+    })
   // If you want the file to be visible in the browser
   // - please modify the callback in javascript. All you
   // need is to return the url to the file, you just saved
