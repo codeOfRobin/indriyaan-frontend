@@ -1,10 +1,12 @@
 
 (function() {
+
+
   // The width and height of the captured photo. We will set the
   // width to the value defined here, but the height will be
   // calculated based on the aspect ratio of the input stream.
 
-  var width = 320;    // We will scale the photo width to this
+  var width = 640;    // We will scale the photo width to this
   var height = 0;     // This will be computed based on the input stream
 
   // |streaming| indicates whether or not we're currently streaming
@@ -108,11 +110,31 @@
 
           $.ajax({
       type: "POST",
-      url: "http://ec2-54-193-5-45.us-west-1.compute.amazonaws.com:5000",
+      url: "http://ec2-54-193-5-45.us-west-1.compute.amazonaws.com:5000/",
       data: {
          image:dataURL
       },success:function(data) {
-        alert(data["identities"])
+        console.log(data);
+        if(data["num_faces"]!=0)
+        {
+          for (var idx in data["faces"]){
+            console.log(data["num_faces"])
+            var face = data["faces"][idx]
+            context.rect(face[0]*2,face[1]*2,face[2]*2,face[3]*2);
+            context.strokeStyle="green";
+            context.stroke();
+            context.fillStyle = "red";
+            context.font = "20pt sans-serif";
+            context.fillText(data["identities"][idx], face[0]*2-100, face[1]*2);
+            if ((data["ages"].length)>0){
+              context.fillText("Ages: "+data["ages"][idx], face[0]*2-100, face[1]*2+50);
+              context.fillText("Past Buys: "+data["Past Buys"][idx], face[0]*2-100, face[1]+100);
+              context.fillText("Last Seen: "+data["Last Seen"][idx], face[0]*2-100, face[1]+150);
+            }
+
+          }
+        }
+
       }
     })
   // If you want the file to be visible in the browser
