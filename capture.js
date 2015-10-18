@@ -108,7 +108,7 @@
 
           $.ajax({
       type: "POST",
-      url: "http://localhost:5000/",
+      url: "http://ec2-54-193-5-45.us-west-1.compute.amazonaws.com:5000",
       data: {
          image:dataURL
       },success:function(data) {
